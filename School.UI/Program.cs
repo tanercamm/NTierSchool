@@ -1,5 +1,8 @@
 
-namespace School.UI
+using Microsoft.EntityFrameworkCore;
+using NTierSchool.Entity.Context;
+
+namespace NTierSchool.UI
 {
     public class Program
     {
@@ -13,6 +16,11 @@ namespace School.UI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<SchoolContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolDB") + ";TrustServerCertificate=True"));
+
+
 
             var app = builder.Build();
 

@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "School.UI", "School.UI\School.UI.csproj", "{F4B0F5B3-4DE0-4AD1-B48F-03702230F0DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTierSchool.UI", "School.UI\NTierSchool.UI.csproj", "{F4B0F5B3-4DE0-4AD1-B48F-03702230F0DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "School.Entity", "School.Entity\School.Entity.csproj", "{C71F401A-704F-4679-AF0A-931ECF4F1456}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTierSchool.Entity", "School.Entity\NTierSchool.Entity.csproj", "{C71F401A-704F-4679-AF0A-931ECF4F1456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "School.DAL", "School.DAL\School.DAL.csproj", "{EA0DA2B6-28B5-40AD-8900-7A5149F44B87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTierSchool.DAL", "School.DAL\NTierSchool.DAL.csproj", "{EA0DA2B6-28B5-40AD-8900-7A5149F44B87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "School.BLL", "School.BLL\School.BLL.csproj", "{40AB97A2-C439-4CC6-B5E2-D85EAB8D743F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NTierSchool.BLL", "School.BLL\NTierSchool.BLL.csproj", "{40AB97A2-C439-4CC6-B5E2-D85EAB8D743F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

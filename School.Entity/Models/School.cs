@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace School.Entity.Models
+namespace NTierSchool.Entity.Models
 {
     public class School : BaseEntity
     {
