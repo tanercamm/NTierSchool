@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NTierSchool.BLL.Services
 {
-    public abstract class BaseService<TEntity> where TEntity : class
+    public class BaseService<TEntity> where TEntity : class
     {
         private readonly IRepository<TEntity> _repository;
 
