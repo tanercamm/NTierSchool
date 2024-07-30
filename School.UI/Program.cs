@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using NTierSchool.BLL.Interfaces;
 using NTierSchool.BLL.Services;
 using NTierSchool.DAL.Concrete;
 using NTierSchool.DAL.Repositories;
@@ -31,10 +32,19 @@ namespace NTierSchool.UI
             builder.Services.AddScoped<IRepository<Class>, GenericRepository<Class>>();
             builder.Services.AddScoped<IRepository<Teacher>, GenericRepository<Teacher>>();
             builder.Services.AddScoped<IRepository<Student>, GenericRepository<Student>>();
-            builder.Services.AddScoped<BaseService<School>>();
-            builder.Services.AddScoped<BaseService<Class>>();
-            builder.Services.AddScoped<BaseService<Teacher>>();
+            //builder.Services.AddScoped<BaseService<School>>();
+            //builder.Services.AddScoped<BaseService<Class>>();
+            //builder.Services.AddScoped<BaseService<Teacher>>();
             builder.Services.AddScoped<BaseService<Student>>();
+
+            builder.Services.AddScoped<IClassService, ClassService>();
+            builder.Services.AddScoped<IClassRepository, ClassRepository>();
+
+            builder.Services.AddScoped<ISchoolService, SchoolService>();
+            builder.Services.AddScoped<ISchoolRepository, SchoolRepository>();
+
+            builder.Services.AddScoped<ITeacherService, TeacherService>();
+            builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 
             var app = builder.Build();
 

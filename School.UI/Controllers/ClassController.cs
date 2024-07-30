@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NTierSchool.BLL.Interfaces;
 using NTierSchool.BLL.Services;
 using NTierSchool.Entity.Models;
 
@@ -10,9 +11,9 @@ namespace NTierSchool.UI.Controllers
     [ApiController]
     public class ClassController : ControllerBase
     {
-        private readonly BaseService<Class> _service;
+        private readonly IClassService _service;
 
-        public ClassController(BaseService<Class> service)
+        public ClassController(IClassService service)
         {
             _service = service;
         }
@@ -21,7 +22,7 @@ namespace NTierSchool.UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Class>>> GetClasses()
         {
-            var classes = await _service.GetAllAsync();
+            var classes = await _service.GetAllWithIncludes();
 
             return Ok(classes);
         }

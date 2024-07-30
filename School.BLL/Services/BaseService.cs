@@ -1,4 +1,5 @@
-﻿using NTierSchool.DAL.Repositories;
+﻿using NTierSchool.BLL.Interfaces;
+using NTierSchool.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NTierSchool.BLL.Services
 {
-    public class BaseService<TEntity> where TEntity : class
+    public class BaseService<TEntity>: IBaseService<TEntity> where TEntity : class
     {
         private readonly IRepository<TEntity> _repository;
 
