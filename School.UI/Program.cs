@@ -1,6 +1,10 @@
 
 using Microsoft.EntityFrameworkCore;
+using NTierSchool.BLL.Services;
+using NTierSchool.DAL.Concrete;
+using NTierSchool.DAL.Repositories;
 using NTierSchool.Entity.Context;
+using NTierSchool.Entity.Models;
 
 namespace NTierSchool.UI
 {
@@ -20,7 +24,17 @@ namespace NTierSchool.UI
             builder.Services.AddDbContext<SchoolContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolDB") + ";TrustServerCertificate=True"));
 
-
+            // Repository ve Servisler için Dependency Injection (Baðýmlýlýk tanýmlamasý)
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(BaseService<>));
+            builder.Services.AddScoped<IRepository<School>, GenericRepository<School>>();
+            builder.Services.AddScoped<IRepository<Class>, GenericRepository<Class>>();
+            builder.Services.AddScoped<IRepository<Teacher>, GenericRepository<Teacher>>();
+            builder.Services.AddScoped<IRepository<Student>, GenericRepository<Student>>();
+            builder.Services.AddScoped<BaseService<School>>();
+            builder.Services.AddScoped<BaseService<Class>>();
+            builder.Services.AddScoped<BaseService<Teacher>>();
+            builder.Services.AddScoped<BaseService<Student>>();
 
             var app = builder.Build();
 
