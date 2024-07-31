@@ -1,4 +1,6 @@
-﻿using NTierSchool.Entity.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using NTierSchool.DAL.Repositories;
+using NTierSchool.Entity.Context;
 using NTierSchool.Entity.Models;
 using System;
 using System.Collections.Generic;
@@ -8,10 +10,25 @@ using System.Threading.Tasks;
 
 namespace NTierSchool.DAL.Concrete
 {
-    public class StudentRepository : GenericRepository<Student>
+    public class StudentRepository : GenericRepository<Student>, IStudentRepository
     {
+        private readonly DbSet<Student> _dbSet;
+
         public StudentRepository(SchoolContext context) : base(context)
         {
+            _dbSet = context.Set<Student>();
+        }
+
+        public async Task<List<Student>> GetAllWithIncludes()
+        {
+            return await _dbSet.
+                            Include(x => x.Class)
+                            .ThenInclude(y => y.School)
+                            .Include(x => x.Class)
+                            .ThenInclude(y => y.Teachers)
+                            .Include(x => x.Class)
+                            .ThenInclude(y => y.Students)
+                            .ToListAsync();
         }
     }
 }

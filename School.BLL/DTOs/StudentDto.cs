@@ -14,6 +14,6 @@ namespace NTierSchool.BLL.DTOs
 
         public int Age { get; set; }
 
-        public ClassDto Classes { get; set; }
+        public ClassDto Class { get; set; }
     }
 }

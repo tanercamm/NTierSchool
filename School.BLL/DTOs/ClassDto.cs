@@ -12,11 +12,11 @@ namespace NTierSchool.BLL.DTOs
 
         public string Name { get; set; }
 
-        public List<TeacherDto> Teachers { get; set; }
+        public List<TeacherDto> Teachers { get; set; } = new List<TeacherDto>();
 
         public SchoolDto School { get; set; }
 
-        public List<StudentDto> Students { get; set; }
+        public List<StudentDto> Students { get; set; } = new List<StudentDto>();
         
     }
 }

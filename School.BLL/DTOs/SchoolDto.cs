@@ -17,6 +17,6 @@ namespace NTierSchool.BLL.DTOs
         [StringLength(50)]
         public string Address { get; set; }
 
-        public List<ClassDto> Classes { get; set; }
+        public List<ClassDto> Classes { get; set; } = new List<ClassDto>();
     }
 }

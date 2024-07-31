@@ -23,14 +23,13 @@ namespace NTierSchool.BLL.Services
         {
             var classEntities = await _classRepository.GetAllWithIncludes();
 
-
             var list = new List<ClassDto>();
 
 
             foreach (var classEntity in classEntities)
             {
 
-                list.Add(new ClassDto()
+                list.Add(new ClassDto
                 {
                     Id = classEntity.Id,
                     Name = classEntity.Name,
@@ -38,7 +37,31 @@ namespace NTierSchool.BLL.Services
                     {
                         Id = classEntity.School.Id,
                         Name = classEntity.School.Name,
-                        Address = classEntity.School.Address
+                        Address = classEntity.School.Address,
+                        Classes = classEntity.School.Classes.Select(c => new ClassDto
+                        {
+                            Id = c.Id,
+                            Name = c.Name,
+                            Teachers = c.Teachers.Select(t => new TeacherDto
+                            {
+                                Id = t.Id,
+                                Name = t.Name,
+                                Age = t.Age,
+                                Subject = t.Subject
+                            }).ToList(),
+                            Students = c.Students.Select(s => new StudentDto
+                            {
+                                Id = s.Id,
+                                Name = s.Name,
+                                Age = s.Age
+                            }).ToList(),
+                            School = new SchoolDto
+                            {
+                                Id = c.School.Id,
+                                Name = c.School.Name,
+                                Address = c.School.Address
+                            }
+                        }).ToList()
                     },
                     Teachers = classEntity.Teachers.Select(y => new TeacherDto
                     {
@@ -55,7 +78,6 @@ namespace NTierSchool.BLL.Services
                     }).ToList()
                 });
             }
-
             return list;
         }
     }

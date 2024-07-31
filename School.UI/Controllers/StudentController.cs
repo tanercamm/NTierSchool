@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NTierSchool.BLL.Interfaces;
 using NTierSchool.BLL.Services;
 using NTierSchool.Entity.Models;
 
@@ -9,9 +10,9 @@ namespace NTierSchool.UI.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private readonly BaseService<Student> _service;
+        private readonly IStudentService _service;
 
-        public StudentController(BaseService<Student> service)
+        public StudentController(IStudentService service)
         {
             _service = service;
         }
@@ -20,7 +21,7 @@ namespace NTierSchool.UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Student>>> GetStudents()
         {
-            var students = await _service.GetAllAsync();
+            var students = await _service.GetAllWithIncludes();
 
             return Ok(students);
         }

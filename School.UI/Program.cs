@@ -32,10 +32,6 @@ namespace NTierSchool.UI
             builder.Services.AddScoped<IRepository<Class>, GenericRepository<Class>>();
             builder.Services.AddScoped<IRepository<Teacher>, GenericRepository<Teacher>>();
             builder.Services.AddScoped<IRepository<Student>, GenericRepository<Student>>();
-            //builder.Services.AddScoped<BaseService<School>>();
-            //builder.Services.AddScoped<BaseService<Class>>();
-            //builder.Services.AddScoped<BaseService<Teacher>>();
-            builder.Services.AddScoped<BaseService<Student>>();
 
             builder.Services.AddScoped<IClassService, ClassService>();
             builder.Services.AddScoped<IClassRepository, ClassRepository>();
@@ -45,6 +41,9 @@ namespace NTierSchool.UI
 
             builder.Services.AddScoped<ITeacherService, TeacherService>();
             builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+
+            builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
             var app = builder.Build();
 

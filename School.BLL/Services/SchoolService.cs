@@ -27,7 +27,7 @@ namespace NTierSchool.BLL.Services
 
             foreach (var schoolEntity in schoolEntities)
             {
-                list.Add(new SchoolDto()
+                list.Add(new SchoolDto
                 {
                     Id = schoolEntity.Id,
                     Name = schoolEntity.Name,
