@@ -2,11 +2,6 @@
 using NTierSchool.BLL.Interfaces;
 using NTierSchool.DAL.Repositories;
 using NTierSchool.Entity.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NTierSchool.BLL.Services
 {
@@ -32,29 +27,10 @@ namespace NTierSchool.BLL.Services
                     Id = schoolEntity.Id,
                     Name = schoolEntity.Name,
                     Address = schoolEntity.Address,
-                    Classes = schoolEntity.Classes.Select(c => new ClassDto
+                    Classes = schoolEntity.Classes.Select(c => new ClassBaseDto
                     {
-                        Id = c.Id,
-                        Name = c.Name,
-                        School = new SchoolDto
-                        {
-                            Id = schoolEntity.Id,
-                            Name = schoolEntity.Name,
-                            Address = schoolEntity.Address
-                        },
-                        Teachers = c.Teachers.Select(t => new TeacherDto
-                        {
-                            Id= t.Id,
-                            Name = t.Name,
-                            Age = t.Age,
-                            Subject = t.Subject
-                        }).ToList(),
-                        Students = c.Students.Select(s => new StudentDto
-                        {
-                            Id = s.Id,
-                            Name = s.Name,
-                            Age= s.Age
-                        }).ToList()
+                        Id= c.Id,
+                        Name = c.Name
                     }).ToList()
                 });
             }

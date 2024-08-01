@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace NTierSchool.BLL.DTOs
 {
-    public class StudentDto : StudentBaseDto
+    public class StudentBaseDto
     {
-        public ClassBaseDto Class { get; set; }
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public int Age { get; set; }
     }
 }

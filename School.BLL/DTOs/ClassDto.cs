@@ -6,17 +6,13 @@ using System.Threading.Tasks;
 
 namespace NTierSchool.BLL.DTOs
 {
-    public class ClassDto
+    public class ClassDto : ClassBaseDto
     {
-        public int Id { get; set; }
+        public List<TeacherBaseDto> Teachers { get; set; } = new List<TeacherBaseDto>();
 
-        public string Name { get; set; }
+        public SchoolBaseDto School { get; set; }
 
-        public List<TeacherDto> Teachers { get; set; } = new List<TeacherDto>();
+        public List<StudentBaseDto> Students { get; set; } = new List<StudentBaseDto>();
 
-        public SchoolDto School { get; set; }
-
-        public List<StudentDto> Students { get; set; } = new List<StudentDto>();
-        
     }
 }

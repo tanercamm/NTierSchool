@@ -2,11 +2,6 @@
 using NTierSchool.BLL.Interfaces;
 using NTierSchool.DAL.Repositories;
 using NTierSchool.Entity.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NTierSchool.BLL.Services
 {
@@ -33,44 +28,20 @@ namespace NTierSchool.BLL.Services
                 {
                     Id = classEntity.Id,
                     Name = classEntity.Name,
-                    School = new SchoolDto
+                    School = new SchoolBaseDto
                     {
                         Id = classEntity.School.Id,
                         Name = classEntity.School.Name,
-                        Address = classEntity.School.Address,
-                        Classes = classEntity.School.Classes.Select(c => new ClassDto
-                        {
-                            Id = c.Id,
-                            Name = c.Name,
-                            Teachers = c.Teachers.Select(t => new TeacherDto
-                            {
-                                Id = t.Id,
-                                Name = t.Name,
-                                Age = t.Age,
-                                Subject = t.Subject
-                            }).ToList(),
-                            Students = c.Students.Select(s => new StudentDto
-                            {
-                                Id = s.Id,
-                                Name = s.Name,
-                                Age = s.Age
-                            }).ToList(),
-                            School = new SchoolDto
-                            {
-                                Id = c.School.Id,
-                                Name = c.School.Name,
-                                Address = c.School.Address
-                            }
-                        }).ToList()
+                        Address = classEntity.School.Address
                     },
-                    Teachers = classEntity.Teachers.Select(y => new TeacherDto
+                    Teachers = classEntity.Teachers.Select(y => new TeacherBaseDto
                     {
                         Id = y.Id,
                         Name = y.Name,
                         Age = y.Age,
                         Subject = y.Subject
                     }).ToList(),
-                    Students = classEntity.Students.Select(y => new StudentDto
+                    Students = classEntity.Students.Select(y => new StudentBaseDto
                     {
                         Id = y.Id,
                         Name = y.Name,
