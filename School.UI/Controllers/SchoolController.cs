@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NTierSchool.BLL.DTOs.School;
 using NTierSchool.BLL.Interfaces;
 using NTierSchool.BLL.Services;
 using NTierSchool.Entity.Models;
@@ -21,7 +22,7 @@ namespace NTierSchool.UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<School>>> GetSchools()
         {
-            var schools = await _service.GetAllWithIncludes();
+            var schools = await _service.GetAllWithDetails();
 
             return Ok(schools);
         }
@@ -30,7 +31,7 @@ namespace NTierSchool.UI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<School>> GetSchool(int id)
         {
-            var school = await _service.GetEntityAsync(id);
+            var school = await _service.GetByIdAsync(id);
 
             if (school == null)
             {
@@ -41,24 +42,24 @@ namespace NTierSchool.UI.Controllers
         }
 
         // POST: api/School
-        [HttpPost]
-        public async Task<ActionResult<School>> AddSchool(School school)
+       [HttpPost]
+        public async Task<ActionResult> AddSchool(CreateSchoolDto dto)
         {
-            await _service.AddAsync(school);
+            await _service.AddAsync(dto);
 
-            return CreatedAtAction(nameof(School), new { id = school.Id }, school);
+            return Ok();
         }
 
         // PUT: api/School/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSchool(int id, School school)
+        public async Task<IActionResult> UpdateSchool(UpdateSchoolDto dto)
         {
-            if (id != school.Id)
+            if (dto.Id == null)
             {
                 return BadRequest();
             }
 
-            await _service.UpdateAsync(school);
+            await _service.UpdateAsync(dto);
 
             return NoContent(); // güncellensin, görülmek istenirse GetSchool ile incelenebilir
         }
@@ -67,7 +68,7 @@ namespace NTierSchool.UI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteSchool(int id)
         {
-            var school = await _service.GetEntityAsync(id);
+            var school = await _service.GetByIdAsync(id);
 
             if (school == null)
             {

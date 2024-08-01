@@ -1,4 +1,5 @@
-﻿using NTierSchool.BLL.DTOs;
+﻿using NTierSchool.BLL.DTOs.Class;
+using NTierSchool.BLL.DTOs.School;
 using NTierSchool.Entity.Models;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,18 @@ using System.Threading.Tasks;
 
 namespace NTierSchool.BLL.Interfaces
 {
-    public interface ISchoolService : IBaseService<School>
+    public interface ISchoolService
     {
-        Task<List<SchoolDto>> GetAllWithIncludes();
+        Task<List<SchoolDto>> GetAllWithDetails();
+
+        Task<List<SchoolBaseDto>> GetAllAsync();
+
+        Task<SchoolDto> GetByIdAsync(int id);
+
+        Task AddAsync(CreateSchoolDto entity);
+
+        Task UpdateAsync(UpdateSchoolDto entity);
+
+        Task DeleteAsync(int id);
     }
 }

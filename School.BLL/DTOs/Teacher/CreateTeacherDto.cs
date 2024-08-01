@@ -5,18 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NTierSchool.BLL.DTOs
+namespace NTierSchool.BLL.DTOs.Teacher
 {
-    public class TeacherBaseDto
+    public class CreateTeacherDto
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
-        [Required]
         public int Age { get; set; }
 
-        [Required]
         public string Subject { get; set; }
+
+        public int ClassId { get; set; }
     }
 }

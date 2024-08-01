@@ -9,7 +9,9 @@ namespace NTierSchool.DAL.Repositories
 {
     public interface ISchoolRepository : IRepository<School>
     {
-        Task<List<School>> GetAllWithIncludes();
+        Task<List<School>> GetAllWithDetails();
+
+        Task<bool> Any(int id);
     }
 
 }

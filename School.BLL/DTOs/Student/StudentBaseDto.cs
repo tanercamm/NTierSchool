@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NTierSchool.BLL.DTOs
+namespace NTierSchool.BLL.DTOs.Student
 {
-    public class ClassBaseDto
+    public class StudentBaseDto
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public int Age { get; set; }
     }
 }

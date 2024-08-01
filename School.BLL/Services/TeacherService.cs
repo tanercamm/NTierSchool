@@ -1,22 +1,31 @@
-﻿using NTierSchool.BLL.DTOs;
+﻿using NTierSchool.BLL.DTOs.Class;
+using NTierSchool.BLL.DTOs.Teacher;
 using NTierSchool.BLL.Interfaces;
+using NTierSchool.DAL.Concrete;
 using NTierSchool.DAL.Repositories;
 using NTierSchool.Entity.Models;
 
 namespace NTierSchool.BLL.Services
 {
-    public class TeacherService : BaseService<Teacher>, ITeacherService
+    public class TeacherService : ITeacherService
     {
-        private readonly ITeacherRepository _repository;
+        private readonly ITeacherRepository _teacherRepository;
+        private readonly IClassRepository _classRepository;
 
-        public TeacherService(ITeacherRepository repository) : base(repository)
+        public TeacherService(ITeacherRepository repository, IClassRepository classRepository)
         {
-            _repository = repository;
+            _teacherRepository = repository;
+            _classRepository = classRepository;
         }
 
-        public async Task<List<TeacherDto>> GetAllWithIncludes()
+        public Task<List<TeacherBaseDto>> GetAllAsync()
         {
-            var teacherEntities = await _repository.GetAllWithIncludes();
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<TeacherDto>> GetAllWithDetails()
+        {
+            var teacherEntities = await _teacherRepository.GetAllWithDetails();
 
             var list = new List<TeacherDto>();
 
@@ -36,6 +45,41 @@ namespace NTierSchool.BLL.Services
                 });
             }
             return list;
+        }
+
+        public Task<TeacherDto> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AddAsync(CreateTeacherDto dto)
+        {
+            var isClassExist = await _classRepository.Any(dto.ClassId);
+
+            if (!isClassExist)
+            {
+                throw new Exception("Class does not exist!");
+            }
+
+            var entity = new Teacher
+            {
+                Name = dto.Name,
+                Age = dto.Age,
+                Subject = dto.Subject,
+                ClassId = dto.ClassId
+            };
+
+            await _teacherRepository.AddAsync(entity);
+        }
+
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(UpdateTeacherDto dto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

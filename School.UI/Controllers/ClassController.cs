@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NTierSchool.BLL.DTOs.Class;
 using NTierSchool.BLL.Interfaces;
 using NTierSchool.BLL.Services;
 using NTierSchool.Entity.Models;
@@ -22,7 +23,7 @@ namespace NTierSchool.UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Class>>> GetClasses()
         {
-            var classes = await _service.GetAllWithIncludes();
+            var classes = await _service.GetAllWithDetails();
 
             return Ok(classes);
         }
@@ -31,7 +32,7 @@ namespace NTierSchool.UI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Class>> GetClass(int id)
         {
-            var c = await _service.GetEntityAsync(id);
+            var c = await _service.GetByIdAsync(id);
 
             if (c == null)
             {
@@ -43,23 +44,23 @@ namespace NTierSchool.UI.Controllers
 
         // POST: api/Class
         [HttpPost]
-        public async Task<ActionResult<Class>> AddClass(Class c)
+        public async Task<ActionResult> AddClass(CreateClassDto dto)
         {
-            await _service.AddAsync(c);
+            await _service.AddAsync(dto);
 
-            return CreatedAtAction(nameof(Class), new { id = c.Id }, c);
+            return Ok();
         }
 
         // PUT: api/Class/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateClass(int id, Class c)
+        public async Task<IActionResult> UpdateClass(UpdateClassDto dto)
         {
-            if (id != c.Id)
+            if (dto.Id == null)
             {
                 return BadRequest();
             }
 
-            await _service.UpdateAsync(c);
+            await _service.UpdateAsync(dto);
 
             return NoContent(); // güncellensin, görülmek istenirse GetClass ile incelenebilir
         }
@@ -68,7 +69,7 @@ namespace NTierSchool.UI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteClass(int id)
         {
-            var c = await _service.GetEntityAsync(id);
+            var c = await _service.GetByIdAsync(id);
 
             if (c == null)
             {

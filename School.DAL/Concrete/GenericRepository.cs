@@ -20,7 +20,7 @@ namespace NTierSchool.DAL.Concrete
             _dbSet = context.Set<T>();
         }
 
-        public async Task<List<T>> GetAll()
+        public async Task<List<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }

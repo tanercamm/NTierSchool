@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NTierSchool.BLL.DTOs
+namespace NTierSchool.BLL.DTOs.Class
 {
-    public class TeacherDto : TeacherBaseDto
+    public class UpdateClassDto : CreateClassDto
     {
-        public ClassBaseDto Class { get; set; }
+        public int Id { get; set; }
     }
 }

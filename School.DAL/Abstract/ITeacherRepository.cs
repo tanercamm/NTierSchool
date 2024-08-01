@@ -9,6 +9,6 @@ namespace NTierSchool.DAL.Repositories
 {
     public interface ITeacherRepository : IRepository<Teacher>
     {
-        Task<List<Teacher>> GetAllWithIncludes();
+        Task<List<Teacher>> GetAllWithDetails();
     }
 }

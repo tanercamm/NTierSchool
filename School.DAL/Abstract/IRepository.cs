@@ -8,7 +8,7 @@ namespace NTierSchool.DAL.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        Task<List<T>> GetAll();
+        Task<List<T>> GetAllAsync();
 
         Task AddAsync(T item);
 

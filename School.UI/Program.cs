@@ -27,7 +27,6 @@ namespace NTierSchool.UI
 
             // Repository ve Servisler için Dependency Injection (Baðýmlýlýk tanýmlamasý)
             builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
-            builder.Services.AddScoped(typeof(BaseService<>));
             builder.Services.AddScoped<IRepository<School>, GenericRepository<School>>();
             builder.Services.AddScoped<IRepository<Class>, GenericRepository<Class>>();
             builder.Services.AddScoped<IRepository<Teacher>, GenericRepository<Teacher>>();

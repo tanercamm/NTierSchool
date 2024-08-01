@@ -1,22 +1,34 @@
 ﻿using NTierSchool.BLL.DTOs;
+using NTierSchool.BLL.DTOs.Class;
+using NTierSchool.BLL.DTOs.School;
+using NTierSchool.BLL.DTOs.Student;
+using NTierSchool.BLL.DTOs.Teacher;
 using NTierSchool.BLL.Interfaces;
+using NTierSchool.DAL.Concrete;
 using NTierSchool.DAL.Repositories;
 using NTierSchool.Entity.Models;
 
 namespace NTierSchool.BLL.Services
 {
-    public class StudentService : BaseService<Student>, IStudentService
+    public class StudentService : IStudentService
     {
-        private readonly IStudentRepository _repository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly IClassRepository _classRepository;
 
-        public StudentService(IStudentRepository repository) : base(repository)
+        public StudentService(IStudentRepository repository, IClassRepository classRepository)
         {
-            _repository = repository;
+            _studentRepository = repository;
+            _classRepository = classRepository;
         }
 
-        public async Task<List<StudentDto>> GetAllWithIncludes()
+        public Task<List<StudentBaseDto>> GetAllAsync()
         {
-            var studentEntities = await _repository.GetAllWithIncludes();
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<StudentDto>> GetAllWithDetails()
+        {
+            var studentEntities = await _studentRepository.GetAllWithDetails();
 
             var list = new List<StudentDto>();
 
@@ -54,6 +66,40 @@ namespace NTierSchool.BLL.Services
                 });
             }
             return list;
+        }
+
+        public Task<StudentDto> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AddAsync(CreateStudentDto dto)
+        {
+            var isClassExist = await _classRepository.Any(dto.ClassId);
+
+            if (!isClassExist)
+            {
+                throw new Exception("Class does not exist!");
+            }
+
+            var entity = new Student
+            {
+                Name = dto.Name,
+                Age = dto.Age,
+                ClassId = dto.ClassId
+            };
+
+            await _studentRepository.AddAsync(entity);
+        }
+
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(UpdateStudentDto dto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

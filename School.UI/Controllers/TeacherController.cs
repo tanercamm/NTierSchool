@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NTierSchool.BLL.DTOs.Teacher;
 using NTierSchool.BLL.Interfaces;
 using NTierSchool.BLL.Services;
 using NTierSchool.Entity.Models;
@@ -21,7 +22,7 @@ namespace NTierSchool.UI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Teacher>>> GetTeachers()
         {
-            var teachers = await _service.GetAllWithIncludes();
+            var teachers = await _service.GetAllWithDetails();
 
             return Ok(teachers);
         }
@@ -30,7 +31,7 @@ namespace NTierSchool.UI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Teacher>> GetTeacher(int id)
         {
-            var teacher = await _service.GetEntityAsync(id);
+            var teacher = await _service.GetByIdAsync(id);
 
             if (teacher == null)
             {
@@ -42,23 +43,23 @@ namespace NTierSchool.UI.Controllers
 
         // POST: api/Teacher
         [HttpPost]
-        public async Task<ActionResult<Teacher>> AddTeacher(Teacher teacher)
+        public async Task<ActionResult<Teacher>> AddTeacher(CreateTeacherDto dto)
         {
-            await _service.AddAsync(teacher);
+            await _service.AddAsync(dto);
 
-            return CreatedAtAction(nameof(Teacher), new { id = teacher.Id }, teacher);
+            return Ok();
         }
 
         // PUT: api/Teacher/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTeacher(int id, Teacher teacher)
+        public async Task<IActionResult> UpdateTeacher(UpdateTeacherDto dto)
         {
-            if (id != teacher.Id)
+            if (dto.Id == null)
             {
                 return BadRequest();
             }
 
-            await _service.UpdateAsync(teacher);
+            await _service.UpdateAsync(dto);
 
             return NoContent(); // güncellensin, görülmek istenirse GetTeacher ile incelenebilir
         }
@@ -67,7 +68,7 @@ namespace NTierSchool.UI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTeacher(int id)
         {
-            var teacher = await _service.GetEntityAsync(id);
+            var teacher = await _service.GetByIdAsync(id);
 
             if (teacher == null)
             {

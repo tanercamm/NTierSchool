@@ -1,15 +1,20 @@
-﻿using NTierSchool.BLL.DTOs;
-using NTierSchool.Entity.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NTierSchool.BLL.DTOs.School;
+using NTierSchool.BLL.DTOs.Teacher;
 
 namespace NTierSchool.BLL.Interfaces
 {
-    public interface ITeacherService : IBaseService<Teacher>
+    public interface ITeacherService
     {
-        Task<List<TeacherDto>> GetAllWithIncludes();
+        Task<List<TeacherDto>> GetAllWithDetails();
+
+        Task<List<TeacherBaseDto>> GetAllAsync();
+
+        Task<TeacherDto> GetByIdAsync(int id);
+
+        Task AddAsync(CreateTeacherDto entity);
+
+        Task UpdateAsync(UpdateTeacherDto entity);
+
+        Task DeleteAsync(int id);
     }
 }
