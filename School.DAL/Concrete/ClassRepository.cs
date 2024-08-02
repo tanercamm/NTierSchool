@@ -19,7 +19,7 @@ namespace NTierSchool.DAL.Concrete
             _dbSet = context.Set<Class>();
         }
 
-        public async Task<bool> Any(int id)
+        public async Task<bool> AnyAsync(int id)
         {
             return await _dbSet.AnyAsync(x => x.Id == id);
         }

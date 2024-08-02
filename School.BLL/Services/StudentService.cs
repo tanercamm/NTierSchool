@@ -107,7 +107,7 @@ namespace NTierSchool.BLL.Services
 
         public async Task AddAsync(CreateStudentDto dto)
         {
-            var isClassExist = await _classRepository.Any(dto.ClassId);
+            var isClassExist = await _classRepository.AnyAsync(dto.ClassId);
 
             if (!isClassExist)
             {
@@ -124,12 +124,22 @@ namespace NTierSchool.BLL.Services
             await _studentRepository.AddAsync(entity);
         }
 
-        public Task DeleteAsync(int id)
+        public async Task UpdateAsync(UpdateStudentDto dto)
         {
-            throw new NotImplementedException();
+            var studentEntity = await _studentRepository.GetByIdAsync(dto.Id);
+
+            if (studentEntity == null)
+            {
+                throw new Exception("Student not found!");
+            }
+
+            studentEntity.Name = dto.Name;
+            studentEntity.Age = dto.Age;
+
+            await _studentRepository.UpdateAsync(studentEntity);
         }
 
-        public Task UpdateAsync(UpdateStudentDto dto)
+        public Task DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }

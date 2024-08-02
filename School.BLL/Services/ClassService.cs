@@ -130,12 +130,21 @@ namespace NTierSchool.BLL.Services
             await _classRepository.AddAsync(entity);
         }
 
-        public Task DeleteAsync(int id)
+        public async Task UpdateAsync(UpdateClassDto dto)
         {
-            throw new NotImplementedException();
+            var classEntity = await _classRepository.GetByIdAsync(dto.Id);
+
+            if (classEntity == null)
+            {
+                throw new Exception("Class not found!");
+            }
+
+            classEntity.Name = dto.Name;
+
+            await _classRepository.UpdateAsync(classEntity);
         }
 
-        public Task UpdateAsync(UpdateClassDto dto)
+        public Task DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }

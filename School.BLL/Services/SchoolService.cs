@@ -92,14 +92,24 @@ namespace NTierSchool.BLL.Services
             await _schoolRepository.AddAsync(entity);
         }
 
-        public Task DeleteAsync(int id)
+        public async Task UpdateAsync(UpdateSchoolDto dto)
         {
-            throw new NotImplementedException();
+            var schoolEntity = await _schoolRepository.GetByIdAsync(dto.Id);
+
+            if (schoolEntity == null)
+            {
+                throw new Exception("School not found!");
+            }
+
+            schoolEntity.Name = dto.Name;
+            schoolEntity.Address = dto.Address;
+
+            await _schoolRepository.UpdateAsync(schoolEntity);
         }
 
-        public Task UpdateAsync(UpdateSchoolDto dto)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+
         }
     }
 }
