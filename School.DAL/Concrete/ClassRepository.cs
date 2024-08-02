@@ -26,11 +26,21 @@ namespace NTierSchool.DAL.Concrete
 
         public async Task<List<Class>> GetAllWithDetails()
         {
-            return await _dbSet.
-                            Include(x => x.School)
+            return await _dbSet
+                            .Include(x => x.School)
                             .Include(x => x.Teachers)
                             .Include(x => x.Students)
                             .ToListAsync();
         }
+
+        public async Task<Class> GetByIdWithDetails(int id)
+        {
+            return await _dbSet
+                            .Include(x => x.School)
+                            .Include(x => x.Teachers)
+                            .Include(x => x.Students)
+                            .FirstOrDefaultAsync(c => c.Id == id);
+        }
+
     }
 }

@@ -30,5 +30,12 @@ namespace NTierSchool.DAL.Concrete
                             .ThenInclude(y => y.Students)
                             .ToListAsync();
         }
+
+        public async Task<Student> GetByIdWithDetails(int id)
+        {
+            return await _dbSet
+                            .Include(x => x.Class)
+                            .FirstOrDefaultAsync(t => t.Id == id);
+        }
     }
 }

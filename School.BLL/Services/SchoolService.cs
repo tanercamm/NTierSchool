@@ -15,9 +15,22 @@ namespace NTierSchool.BLL.Services
             _schoolRepository = repository;
         }
 
-        public Task<List<SchoolBaseDto>> GetAllAsync()
+        public async Task<List<SchoolBaseDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var schoolEntities = await _schoolRepository.GetAllAsync();
+
+            var list = new List<SchoolBaseDto>();
+
+            foreach (var schoolEntity in schoolEntities)
+            {
+                list.Add(new SchoolBaseDto
+                {
+                    Id = schoolEntity.Id,
+                    Name = schoolEntity.Name,
+                    Address = schoolEntity.Address
+                });
+            }
+            return list;
         }
 
         public async Task<List<SchoolDto>> GetAllWithDetails()
@@ -44,6 +57,30 @@ namespace NTierSchool.BLL.Services
             return list;
         }
 
+        public async Task<SchoolDto> GetByIdAsync(int id)
+        {
+            var schoolEntity = await _schoolRepository.GetByIdWithDetails(id);
+
+            if (schoolEntity == null)
+            {
+                throw new Exception("School not found!");
+            }
+
+            var schoolDto = new SchoolDto
+            {
+                Id = schoolEntity.Id,
+                Name = schoolEntity.Name,
+                Address = schoolEntity.Address,
+                Classes = schoolEntity.Classes.Select(c => new ClassBaseDto
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                }).ToList()
+            };
+
+            return schoolDto;
+        }
+
         public async Task AddAsync(CreateSchoolDto dto)
         {
             var entity = new School
@@ -56,11 +93,6 @@ namespace NTierSchool.BLL.Services
         }
 
         public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<SchoolDto> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }

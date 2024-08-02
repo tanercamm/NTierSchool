@@ -20,9 +20,21 @@ namespace NTierSchool.BLL.Services
             _schoolRepository = schoolRepository;
         }
 
-        public Task<List<ClassBaseDto>> GetAllAsync()
+        public async Task<List<ClassBaseDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var classEntities = await _classRepository.GetAllAsync();
+
+            var list = new List<ClassBaseDto>();
+
+            foreach (var classEntity in classEntities)
+            {
+                list.Add(new ClassBaseDto
+                {
+                    Id = classEntity.Id,
+                    Name = classEntity.Name
+                });
+            }
+            return list;
         }
 
         public async Task<List<ClassDto>> GetAllWithDetails()
@@ -63,14 +75,46 @@ namespace NTierSchool.BLL.Services
             return list;
         }
 
-        public Task<ClassDto> GetByIdAsync(int id)
+        public async Task<ClassDto> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var classEntity = await _classRepository.GetByIdWithDetails(id);
+
+            if (classEntity == null)
+            {
+                throw new Exception("Class not found!");
+            }
+
+            var classDto = new ClassDto
+            {
+                Id = classEntity.Id,
+                Name = classEntity.Name,
+                School = new SchoolBaseDto
+                {
+                    Id = classEntity.School.Id,
+                    Name = classEntity.School.Name,
+                    Address = classEntity.School.Address
+                },
+                Teachers = classEntity.Teachers.Select(t => new TeacherBaseDto
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Age = t.Age,
+                    Subject = t.Subject
+                }).ToList(),
+                Students = classEntity.Students.Select(s => new StudentBaseDto
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Age = s.Age
+                }).ToList()
+            };
+
+            return classDto;
         }
 
         public async Task AddAsync(CreateClassDto dto)
         {
-            var isSchoolExist = await _schoolRepository.Any(dto.SchoolId);
+            var isSchoolExist = await _schoolRepository.AnyAsync(dto.SchoolId);
 
             if (!isSchoolExist)
             {

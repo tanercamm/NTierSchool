@@ -12,5 +12,8 @@ namespace NTierSchool.DAL.Repositories
         Task<List<Class>> GetAllWithDetails();
 
         Task<bool> Any(int id);
+
+        Task<Class> GetByIdWithDetails(int id);
+
     }
 }

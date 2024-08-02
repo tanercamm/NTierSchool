@@ -21,9 +21,22 @@ namespace NTierSchool.BLL.Services
             _classRepository = classRepository;
         }
 
-        public Task<List<StudentBaseDto>> GetAllAsync()
+        public async Task<List<StudentBaseDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var studentEntities = await _studentRepository.GetAllAsync();
+
+            var list = new List<StudentBaseDto>();
+
+            foreach (var studentEntity in studentEntities)
+            {
+                list.Add(new StudentBaseDto
+                {
+                    Id = studentEntity.Id,
+                    Name = studentEntity.Name,
+                    Age = studentEntity.Age
+                });
+            }
+            return list;
         }
 
         public async Task<List<StudentDto>> GetAllWithDetails()
@@ -68,9 +81,28 @@ namespace NTierSchool.BLL.Services
             return list;
         }
 
-        public Task<StudentDto> GetByIdAsync(int id)
+        public async Task<StudentDto> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var studentEntity = await _studentRepository.GetByIdWithDetails(id);
+
+            if (studentEntity == null)
+            {
+                throw new Exception("Student not found!");
+            }
+
+            var studentDto = new StudentDto
+            {
+                Id = studentEntity.Id,
+                Name = studentEntity.Name,
+                Age = studentEntity.Age,
+                Class = new ClassBaseDto
+                {
+                    Id = studentEntity.Class.Id,
+                    Name = studentEntity.Class.Name
+                }
+            };
+
+            return studentDto;
         }
 
         public async Task AddAsync(CreateStudentDto dto)

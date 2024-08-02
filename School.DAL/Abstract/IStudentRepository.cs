@@ -10,5 +10,7 @@ namespace NTierSchool.DAL.Repositories
     public interface IStudentRepository : IRepository<Student>
     {
         Task<List<Student>> GetAllWithDetails();
+        
+        Task<Student> GetByIdWithDetails(int id);
     }
 }

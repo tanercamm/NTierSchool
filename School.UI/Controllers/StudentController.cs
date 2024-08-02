@@ -19,10 +19,19 @@ namespace NTierSchool.UI.Controllers
         }
 
         // GET: api/Student
+        [HttpGet("Details")]
+        public async Task<ActionResult<List<Student>>> GetStudentsDetails()
+        {
+            var students = await _service.GetAllWithDetails();
+
+            return Ok(students);
+        }
+
+        // GET: api/Student
         [HttpGet]
         public async Task<ActionResult<List<Student>>> GetStudents()
         {
-            var students = await _service.GetAllWithDetails();
+            var students = await _service.GetAllAsync();
 
             return Ok(students);
         }
