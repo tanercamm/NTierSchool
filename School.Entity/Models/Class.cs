@@ -16,8 +16,18 @@ namespace NTierSchool.Entity.Models
         [ForeignKey("SchoolId")]
         public School School { get; set; }
 
-        public List<Teacher> Teachers { get; set; }
+        public List<Teacher> Teachers { get; set; } = new List<Teacher>();
 
-        public List<Student> Students { get; set; }
+        public List<Student> Students { get; set; } = new List<Student>();
+
+        public bool IsDeleted { get; private set; }
+
+        public void Delete()
+        {
+            Teachers.ForEach(x => x.Delete());
+            Students.ForEach(x => x.Delete());
+
+            IsDeleted = true;
+        }
     }
 }

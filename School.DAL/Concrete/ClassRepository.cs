@@ -28,8 +28,9 @@ namespace NTierSchool.DAL.Concrete
         {
             return await _dbSet
                             .Include(x => x.School)
-                            .Include(x => x.Teachers)
-                            .Include(x => x.Students)
+                            .Include(x => x.Teachers.Where(t => !t.IsDeleted))
+                            .Include(x => x.Students.Where(s => !s.IsDeleted))
+                            .Where(c => !c.IsDeleted)
                             .ToListAsync();
         }
 
@@ -37,9 +38,18 @@ namespace NTierSchool.DAL.Concrete
         {
             return await _dbSet
                             .Include(x => x.School)
-                            .Include(x => x.Teachers)
-                            .Include(x => x.Students)
-                            .FirstOrDefaultAsync(c => c.Id == id);
+                            .Include(x => x.Teachers.Where(t => !t.IsDeleted))
+                            .Include(x => x.Students.Where(s => !s.IsDeleted))
+                            .FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
+        }
+
+        public async Task<List<Class>> GetAllBySchoolIdWithDetails(int schoolId)
+        {
+            return await _dbSet
+                            .Include(x => x.Teachers.Where(t => !t.IsDeleted))
+                            .Include(x => x.Students.Where(s => !s.IsDeleted))
+                            .Where(x => x.SchoolId == schoolId && !x.IsDeleted)
+                            .ToListAsync();
         }
 
     }

@@ -18,5 +18,12 @@ namespace NTierSchool.Entity.Models
 
         [Required]
         public int Age { get; set; }
+    
+        public bool IsDeleted { get; set; }
+
+        public void Delete()
+        {
+            IsDeleted = true;
+        }
     }
 }

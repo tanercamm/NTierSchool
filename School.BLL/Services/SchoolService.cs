@@ -1,6 +1,7 @@
-﻿using NTierSchool.BLL.DTOs.Class;
+﻿ using NTierSchool.BLL.DTOs.Class;
 using NTierSchool.BLL.DTOs.School;
 using NTierSchool.BLL.Interfaces;
+using NTierSchool.DAL.Concrete;
 using NTierSchool.DAL.Repositories;
 using NTierSchool.Entity.Models;
 
@@ -9,10 +10,12 @@ namespace NTierSchool.BLL.Services
     public class SchoolService : ISchoolService
     {
         private readonly ISchoolRepository _schoolRepository;
+        private readonly IClassRepository _classRepository;
 
-        public SchoolService(ISchoolRepository repository)
+        public SchoolService(ISchoolRepository schoolRepository, IClassRepository classRepository)
         {
-            _schoolRepository = repository;
+            _schoolRepository = schoolRepository;
+            _classRepository = classRepository;
         }
 
         public async Task<List<SchoolBaseDto>> GetAllAsync()
@@ -21,7 +24,7 @@ namespace NTierSchool.BLL.Services
 
             var list = new List<SchoolBaseDto>();
 
-            foreach (var schoolEntity in schoolEntities)
+            foreach (var schoolEntity in schoolEntities.Where(s => !s.IsDeleted))
             {
                 list.Add(new SchoolBaseDto
                 {
@@ -39,18 +42,20 @@ namespace NTierSchool.BLL.Services
 
             var list = new List<SchoolDto>();
 
-            foreach (var schoolEntity in schoolEntities)
+            foreach (var schoolEntity in schoolEntities.Where(s => !s.IsDeleted))
             {
                 list.Add(new SchoolDto
                 {
                     Id = schoolEntity.Id,
                     Name = schoolEntity.Name,
                     Address = schoolEntity.Address,
-                    Classes = schoolEntity.Classes.Select(c => new ClassBaseDto
-                    {
-                        Id = c.Id,
-                        Name = c.Name
-                    }).ToList()
+                    Classes = schoolEntity.Classes
+                        .Where(c => !c.IsDeleted)
+                        .Select(c => new ClassBaseDto
+                        {
+                            Id = c.Id,
+                            Name = c.Name
+                        }).ToList()
                 });
             }
 
@@ -61,7 +66,7 @@ namespace NTierSchool.BLL.Services
         {
             var schoolEntity = await _schoolRepository.GetByIdWithDetails(id);
 
-            if (schoolEntity == null)
+            if (schoolEntity == null || schoolEntity.IsDeleted)
             {
                 throw new Exception("School not found!");
             }
@@ -71,11 +76,13 @@ namespace NTierSchool.BLL.Services
                 Id = schoolEntity.Id,
                 Name = schoolEntity.Name,
                 Address = schoolEntity.Address,
-                Classes = schoolEntity.Classes.Select(c => new ClassBaseDto
-                {
-                    Id = c.Id,
-                    Name = c.Name
-                }).ToList()
+                Classes = schoolEntity.Classes
+                    .Where(c => !c.IsDeleted)
+                    .Select(c => new ClassBaseDto
+                    {
+                        Id = c.Id,
+                        Name = c.Name
+                    }).ToList()
             };
 
             return schoolDto;
@@ -96,7 +103,7 @@ namespace NTierSchool.BLL.Services
         {
             var schoolEntity = await _schoolRepository.GetByIdAsync(dto.Id);
 
-            if (schoolEntity == null)
+            if (schoolEntity == null || schoolEntity.IsDeleted)
             {
                 throw new Exception("School not found!");
             }
@@ -109,7 +116,27 @@ namespace NTierSchool.BLL.Services
 
         public async Task DeleteAsync(int id)
         {
+            var school = await _schoolRepository.GetByIdAsync(id);
 
+            if (school == null || school.IsDeleted)
+            {
+                throw  new Exception($"Unable to delete {id}");
+            }
+
+            school.Delete();
+
+            await _schoolRepository.UpdateAsync(school);
+
+            var classList = await _classRepository.GetAllBySchoolIdWithDetails(school.Id);
+
+            classList.ForEach(x => x.Delete());
+
+            foreach (var classEntity in classList)
+            {
+                await _classRepository.UpdateAsync(classEntity);
+            }
+
+            await _schoolRepository.SaveChangesAsync();
         }
     }
 }

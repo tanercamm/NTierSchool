@@ -17,5 +17,7 @@ namespace NTierSchool.DAL.Repositories
         Task DeleteAsync(T item);
 
         Task<T> GetByIdAsync(int id);
+
+        Task SaveChangesAsync();
     }
 }

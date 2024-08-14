@@ -10,7 +10,9 @@ namespace NTierSchool.DAL.Repositories
     public interface ITeacherRepository : IRepository<Teacher>
     {
         Task<List<Teacher>> GetAllWithDetails();
-    
+
         Task<Teacher> GetByIdWithDetails(int id);
+
+        Task<List<Teacher>> GetAllByClassIdWithDetails(int classId);
     }
 }

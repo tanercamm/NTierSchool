@@ -27,14 +27,14 @@ namespace NTierSchool.DAL.Concrete
         public async Task<List<School>> GetAllWithDetails()
         {
             return await _dbSet
-                            .Include(x => x.Classes)
+                            .Include(x => x.Classes.Where(c => !c.IsDeleted))
                             .ToListAsync();
         }
 
         public async Task<School> GetByIdWithDetails(int id)
         {
             return await _dbSet
-                            .Include(x => x.Classes)
+                            .Include(x => x.Classes.Where(c => !c.IsDeleted))
                             .FirstOrDefaultAsync(c => c.Id == id);
         }
     }

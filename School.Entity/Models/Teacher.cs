@@ -20,5 +20,12 @@ namespace NTierSchool.Entity.Models
 
         [ForeignKey("ClassId")]
         public Class Class { get; set; }
+
+        public bool IsDeleted { get; private set; }
+
+        public void Delete()
+        {
+            IsDeleted  = true;
+        }
     }
 }

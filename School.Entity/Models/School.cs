@@ -13,6 +13,14 @@ namespace NTierSchool.Entity.Models
         [StringLength(50)]
         public string Address { get; set; }
 
-        public List<Class> Classes { get; set; }
+        public List<Class> Classes { get; set; } = new List<Class>();
+
+        public bool IsDeleted { get; private set; }
+    
+        public void Delete()
+        {
+            IsDeleted = true;
+            Classes.ForEach(x => x.Delete());
+        }
     }
 }

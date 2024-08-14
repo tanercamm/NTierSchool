@@ -15,9 +15,9 @@ namespace NTierSchool.BLL.Services
         private readonly IStudentRepository _studentRepository;
         private readonly IClassRepository _classRepository;
 
-        public StudentService(IStudentRepository repository, IClassRepository classRepository)
+        public StudentService(IStudentRepository studentRepository, IClassRepository classRepository)
         {
-            _studentRepository = repository;
+            _studentRepository = studentRepository;
             _classRepository = classRepository;
         }
 
@@ -27,7 +27,7 @@ namespace NTierSchool.BLL.Services
 
             var list = new List<StudentBaseDto>();
 
-            foreach (var studentEntity in studentEntities)
+            foreach (var studentEntity in studentEntities.Where(t => !t.IsDeleted))
             {
                 list.Add(new StudentBaseDto
                 {
@@ -45,7 +45,7 @@ namespace NTierSchool.BLL.Services
 
             var list = new List<StudentDto>();
 
-            foreach (var studentEntity in studentEntities)
+            foreach (var studentEntity in studentEntities.Where(t => !t.IsDeleted))
             {
                 list.Add(new StudentDto
                 {
@@ -85,7 +85,7 @@ namespace NTierSchool.BLL.Services
         {
             var studentEntity = await _studentRepository.GetByIdWithDetails(id);
 
-            if (studentEntity == null)
+            if (studentEntity == null || studentEntity.IsDeleted)
             {
                 throw new Exception("Student not found!");
             }
@@ -128,7 +128,7 @@ namespace NTierSchool.BLL.Services
         {
             var studentEntity = await _studentRepository.GetByIdAsync(dto.Id);
 
-            if (studentEntity == null)
+            if (studentEntity == null || studentEntity.IsDeleted)
             {
                 throw new Exception("Student not found!");
             }
@@ -139,9 +139,18 @@ namespace NTierSchool.BLL.Services
             await _studentRepository.UpdateAsync(studentEntity);
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var student = await _studentRepository.GetByIdAsync(id);
+
+            if (student == null || student.IsDeleted)
+            {
+                throw new Exception($"Unable to delete {id}");
+            }
+
+            student.Delete();
+
+            await _studentRepository.SaveChangesAsync();
         }
     }
 }
